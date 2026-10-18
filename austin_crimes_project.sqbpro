@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:\Users\Utente\AppData\Local\Temp\6c2747fd-75cf-46d7-aa9c-343247d5d0d3_06_Storage_DBMS-20260127T200538Z-3-001.zip.0d3\06_Storage_DBMS\austin_crimes_project.db" readonly="1" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="3091"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="crimes_data" custom_title="0" dock_id="1" table="4,11:maincrimes_data"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000001fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000011300ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1*">-- 1. How many crimes have occurred in Austin?
+
+SELECT COUNT(*) AS total_crimes
+FROM crimes_data;
+
+-- 2. Which neighborhoods are the most dangerous?
+
+SELECT Neighborhood, COUNT(*) AS total_crimes
+FROM crimes_data
+WHERE Neighborhood IS NOT NULL
+GROUP BY Neighborhood
+ORDER BY total_crimes DESC;
+
+-- 3. How does crime vary when adjusted by population?
+
+SELECT Neighborhood, COUNT(*) AS crime_count, Population,
+       (CAST(COUNT(*) AS FLOAT) / Population) * 1000 AS crimes_per_1k
+FROM crimes_data
+WHERE Population &gt; 0
+GROUP BY Neighborhood
+ORDER BY crimes_per_1k DESC;
+
+
+-- 4. What are the most common types of crime?
+
+SELECT &quot;Offense Case Type&quot;, COUNT(*) AS total_incidents
+FROM crimes_data
+GROUP BY &quot;Offense Case Type&quot;
+ORDER BY total_incidents DESC;
+
+
+
+-- 5. How does crime vary across months within the same year?
+
+SELECT substr(&quot;Offense Date&quot;, 1, 2) AS Month, COUNT(*) AS total_crimes
+FROM crimes_data
+GROUP BY Month
+ORDER BY Month ASC;</sql><current_tab id="0"/></tab_sql></sqlb_project>
